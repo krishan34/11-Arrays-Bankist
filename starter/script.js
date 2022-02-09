@@ -78,6 +78,21 @@ const displayMovements = function (movements) {
 };
 displayMovements(account1.movements);
 
+// computUserName
+
+const UserName = [];
+const createUserName = function (accs) {
+  accs.forEach(function (acc) {
+    acc.UserName = acc.owner
+      .toLowerCase()
+      .split(' ')
+      .map(l => l[0])
+      .join('');
+  });
+};
+
+createUserName(accounts);
+console.log(accounts);
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
@@ -93,8 +108,35 @@ const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 const eurToUsd = 1.1;
 
-const movementsUsd = movements.map(mov => mov * eurToUsd);
+const movementsUsd = movements.map(
+  (mov, i) =>
+    `Movement ${i + 1}: You ${mov > 0 ? 'Deposited' : 'Withdrawal'} ${Math.abs(
+      mov
+    )}`
+);
 console.log(movementsUsd);
+
+// Filter Method
+
+const withdrawal = movements.filter(withdrawal => withdrawal < 0);
+
+console.log(withdrawal);
+
+// reduce Method
+
+// first solution
+// 0 is the prevalue before adding the crValue in the prevalue
+const balance = movements.reduce(function (preValue, crValue) {
+  console.log(preValue);
+  return preValue + crValue;
+}, 0);
+
+console.log(typeof balance);
+// second solution
+
+// const totalBalance = movements.reduce((total, i) => total + i);
+
+// console.log(totalBalance);
 
 /////////////////////////////////////////////////
 
