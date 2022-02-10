@@ -70,7 +70,7 @@ const displayMovements = function (movements) {
           <div class="movements__type movements__type--${trans}">${
       i + 1
     } ${trans}</div>
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov} €</div>
         </div>`;
     // TO Insert HTML in the element based on potions.
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -80,7 +80,6 @@ displayMovements(account1.movements);
 
 // computUserName
 
-const UserName = [];
 const createUserName = function (accs) {
   accs.forEach(function (acc) {
     acc.UserName = acc.owner
@@ -93,9 +92,50 @@ const createUserName = function (accs) {
 
 createUserName(accounts);
 console.log(accounts);
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 
+// show total balance
+const totalBalance = function (movements) {
+  const balance = movements.reduce((total, i) => total + i, 0);
+  labelBalance.textContent = `${balance} €`;
+};
+totalBalance(account1.movements);
+
+// Summary
+const depositedSummary = function (movements) {
+  const inSummary = movements
+    .filter(amount => amount > 0)
+    .reduce((acc, crr) => acc + crr, 0);
+  labelSumIn.textContent = `${inSummary}€`;
+  const outSummary = movements
+    .filter(amount => amount < 0)
+    .reduce((acc, crr) => acc + crr, 0);
+  labelSumOut.textContent = `${Math.abs(outSummary)}€`;
+
+  const intrest = movements
+    .filter(amount => amount > 0)
+    .map(amount => (amount * 1.2) / 100)
+    .filter((amount, i, arr) => {
+      console.log(arr);
+      return amount >= 1;
+    })
+    .reduce((acc, intrs) => acc + intrs, 0);
+  labelSumInterest.textContent = `${Math.abs(intrest)}€`;
+};
+
+depositedSummary(account1.movements);
+
+// const withdrawalSummary = function (movements) {
+//   const outSummary = movements
+//     .filter(amount => amount < 0)
+//     .reduce((acc, crr) => acc + crr, 0);
+//   labelSumOut.textContent = `${outSummary} €`;
+// };
+
+// withdrawalSummary(account1.movements);
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+/*
 // LECTURES
 
 const currencies = new Map([
@@ -126,15 +166,15 @@ console.log(withdrawal);
 
 // first solution
 // 0 is the prevalue before adding the crValue in the prevalue
-const balance = movements.reduce(function (preValue, crValue) {
-  console.log(preValue);
-  return preValue + crValue;
-}, 0);
+// const balance = movements.reduce(function (preValue, crValue) {
+//   console.log(preValue);
+//   return preValue + crValue;
+// }, 0);
 
-console.log(typeof balance);
-// second solution
+// console.log(typeof balance);
+// // second solution
 
-// const totalBalance = movements.reduce((total, i) => total + i);
+// const totalBalance = movements.reduce((total, i) => total + i, 0);
 
 // console.log(totalBalance);
 
