@@ -91,7 +91,6 @@ const createUserName = function (accs) {
 };
 
 createUserName(accounts);
-console.log(accounts);
 
 // show total balance
 const totalBalance = function (movements) {
@@ -115,7 +114,6 @@ const depositedSummary = function (movements) {
     .filter(amount => amount > 0)
     .map(amount => (amount * 1.2) / 100)
     .filter((amount, i, arr) => {
-      console.log(arr);
       return amount >= 1;
     })
     .reduce((acc, intrs) => acc + intrs, 0);
@@ -124,18 +122,18 @@ const depositedSummary = function (movements) {
 
 depositedSummary(account1.movements);
 
-// const withdrawalSummary = function (movements) {
-//   const outSummary = movements
-//     .filter(amount => amount < 0)
-//     .reduce((acc, crr) => acc + crr, 0);
-//   labelSumOut.textContent = `${outSummary} €`;
-// };
+const withdrawalSummary = function (movements) {
+  const outSummary = movements
+    .filter(amount => amount < 0)
+    .reduce((acc, crr) => acc + crr, 0);
+  labelSumOut.textContent = `${outSummary} €`;
+};
 
-// withdrawalSummary(account1.movements);
+withdrawalSummary(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-/*
+
 // LECTURES
 
 const currencies = new Map([
@@ -143,10 +141,12 @@ const currencies = new Map([
   ['EUR', 'Euro'],
   ['GBP', 'Pound sterling'],
 ]);
-
+/*
 const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 const eurToUsd = 1.1;
+
+// MAP Method
 
 const movementsUsd = movements.map(
   (mov, i) =>
@@ -156,7 +156,7 @@ const movementsUsd = movements.map(
 );
 console.log(movementsUsd);
 
-// Filter Method
+// Filter Method return all the values or array
 
 const withdrawal = movements.filter(withdrawal => withdrawal < 0);
 
@@ -164,12 +164,12 @@ console.log(withdrawal);
 
 // reduce Method
 
-// first solution
+//  first solution
 // 0 is the prevalue before adding the crValue in the prevalue
-// const balance = movements.reduce(function (preValue, crValue) {
-//   console.log(preValue);
-//   return preValue + crValue;
-// }, 0);
+const balance = movements.reduce(function (preValue, crValue) {
+  console.log(preValue);
+  return preValue + crValue;
+}, 0);
 
 // console.log(typeof balance);
 // // second solution
@@ -178,10 +178,24 @@ console.log(withdrawal);
 
 // console.log(totalBalance);
 
+// FIND Method only return just one value.
+
+const time = movements.find(k => k > 400);
+console.log(time);
+
+//const account = accounts.find(acc => acc.owner === 'Jessica Davis');
+
+for (const value of Object.values(account2)) {
+  if (value === 'Jessica Davis') {
+    console.log(`owner name is ${value}`);
+  } else {
+    console.log('not found');
+  }
+}
 /////////////////////////////////////////////////
 
 // forEach
-/*
+
 movements.forEach(function (movement) {
   if (movement > 0) {
     console.log(`Amount deposited ${movement}`);
