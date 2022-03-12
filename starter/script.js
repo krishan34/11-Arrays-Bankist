@@ -61,10 +61,14 @@ const inputLoanAmount = document.querySelector('.form__input--loan-amount');
 const inputCloseUsername = document.querySelector('.form__input--user');
 const inputClosePin = document.querySelector('.form__input--pin');
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   // TO REMOVE Already defined contents from HTML.
   containerMovements.innerHTML = ' ';
-  movements.forEach(function (mov, i) {
+
+  // didn't want to damage the orginal data so used slice method to make a copy.
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+
+  movs.forEach(function (mov, i) {
     const trans = mov > 0 ? 'deposit' : 'withdrawal';
     const html = `<div class="movements__row">
           <div class="movements__type movements__type--${trans}">${
@@ -171,6 +175,62 @@ btnTransfer.addEventListener('click', function (e) {
   }
 });
 
+// Close Account Funtionality
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault();
+  if (
+    inputCloseUsername.value === currentAccount.UserName &&
+    Number(inputClosePin.value) === currentAccount.pin
+  ) {
+    const index = accounts.findIndex(
+      acc => acc.UserName === currentAccount.UserName
+    );
+    // Delete Account
+    accounts.splice(index, 1);
+    // Hide UI
+    containerApp.style.opacity = 0;
+    // Clear input fields
+    inputLoginUsername.value = inputLoginPin.value = ' ';
+  }
+});
+
+// Loan Functionality
+
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  // Teacher solution
+
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(acc => acc >= amount * 0.1)) {
+    currentAccount.movements.push(amount);
+    updateUI(currentAccount);
+    // Clear input fields
+    inputLoanAmount.value = ' ';
+  } else {
+    console.log('rejected');
+  }
+
+  // my Solution
+  /*
+  const loanAmount = (currentAccount.balance * 10) / 100;
+  console.log(loanAmount, inputLoanAmount.value);
+  if (Number(inputLoanAmount.value) <= loanAmount) {
+    currentAccount.movements.push(inputLoanAmount.value);
+    console.log('approved');
+  } else {
+    console.log('rejected');
+  }*/
+});
+
+// sorting Funtions:
+let sorted = false;
+btnSort.addEventListener('click', function (e) {
+  e.preventDefault();
+  displayMovements(currentAccount.movements, !sorted);
+  sorted = !sorted;
+});
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 
@@ -254,4 +314,31 @@ currencies.forEach(function (value, key, map) {
     console.log(`currency is in ${value}`);
   }
 });
+
+
+const points = [40, 100, 1, 5, 25, 10];
+// let len = points.length;
+let max = -Infinity;
+for (const len of points) {
+  if (points[len] > max) {
+    max = points[len];
+  }
+}
+console.log(max);
 */
+// Filling up array
+
+const x = new Array(7);
+// this will fill up an array seven time with value 1.
+x.fill(1);
+// fill can also be used as slice method.
+x.fill(23, 3, 5);
+
+console.log(x);
+
+function randomNumber(min, max) {
+  return Math.floor(Math.random() * (max - Min + 1) - min);
+}
+// first argument is lengt secont is call back function.
+const y = Array.from({ length: 100 }, randomNumber(1, 6));
+console.log(y);
